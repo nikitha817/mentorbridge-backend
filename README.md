@@ -54,6 +54,32 @@ uvicorn app.main:app --reload
 - [ ] Add student/mentor profile models
 - [ ] Basic matching algorithm
 
+## Architecture
+
+```
+┌─────────────┐
+│   React     │
+│   Native    │
+│  Frontend   │
+└──────┬──────┘
+       │
+       ▼
+┌──────────────────┐
+│    FastAPI       │
+│    Backend       │
+│ (JWT Auth,       │
+│  Matching,       │
+│  Claude API)     │
+└────────┬─────────┘
+         │
+         ▼
+┌──────────────────┐
+│   PostgreSQL     │
+│   + pgvector     │
+│   (Embeddings)   │
+└──────────────────┘
+```
+
 ## Author
 
 Nikitha Kantha | AI & CS Year 2 | St. Ann's College for Women

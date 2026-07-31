@@ -6,6 +6,7 @@ Handles user authentication and basic endpoints
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from app.database import engine, Base
+from app.models import User, Student, Mentor, MentorshipSession
 
 # Create database tables on startup
 Base.metadata.create_all(bind=engine)

@@ -37,9 +37,36 @@ class LoginRequest(BaseModel):
 # Include routers
 app.include_router(router)
 
-@app.get("/")
-async def root():
-    """API root endpoint - returns service info"""
-    return {"message": "MentorBridge API v0.1"}
+@app.get("/health")
+async def health():
+    """Health check endpoint"""
+    return {"status": "healthy", "service": "mentorbridge-backend"}
 
-# ... rest of code
+@app.post("/auth/signup")
+async def signup(request: SignupRequest):
+    """User signup endpoint with password hashing"""
+    if request.role not in ["student", "mentor"]:
+        raise HTTPException(status_code=400, detail="Role must be 'student' or 'mentor'")
+    
+    # Hash password
+    hashed_pwd = hash_password(request.password)
+    
+    # Create token
+    access_token = create_access_token(data={"sub": request.email})
+    
+    return {
+        "message": "Signup successful",
+        "email": request.email,
+        "role": request.role,
+        "access_token": access_token,
+        "token_type": "bearer"
+    }
+
+@app.post("/auth/login")
+async def login(request: LoginRequest):
+    """User login endpoint"""
+    return {
+        "message": "Login successful",
+        "email": request.email,
+        "token": "placeholder_jwt_token"
+    }
